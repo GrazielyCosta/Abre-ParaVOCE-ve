@@ -1,1 +1,97 @@
-# Para-Meu-Amor
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para você ❤️</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #fff7f8;
+      background: radial-gradient(circle at top, #7e1028 0%, #310713 48%, #130208 100%);
+    }
+    main {
+      width: min(92vw, 620px);
+      text-align: center;
+      padding: 42px 24px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 28px;
+      background: rgba(255,255,255,.07);
+      backdrop-filter: blur(9px);
+      box-shadow: 0 22px 70px rgba(0,0,0,.35);
+    }
+    h1 { margin: 0 0 12px; font-size: clamp(2.1rem, 8vw, 4.2rem); }
+    p { margin: 0 auto 28px; max-width: 37ch; font-size: 1.08rem; line-height: 1.55; color: #ffe7eb; }
+    #heart {
+      border: 0;
+      background: transparent;
+      color: #ff2f56;
+      font-size: clamp(7rem, 29vw, 13rem);
+      line-height: 1;
+      cursor: pointer;
+      filter: drop-shadow(0 8px 14px rgba(255, 25, 74, .4));
+      transition: transform .18s ease, color .35s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #heart:hover { transform: scale(1.08); }
+    #heart:active { transform: scale(.9); }
+    #counter { margin-top: 14px; min-height: 1.5em; font-size: 1rem; color: #ffd2db; }
+    .spark {
+      position: fixed;
+      pointer-events: none;
+      font-size: 2rem;
+      animation: float 1.3s ease-out forwards;
+    }
+    @keyframes float {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(.5) rotate(0deg); }
+      100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(1.45) rotate(30deg); }
+    }
+    .hint { margin-top: 16px; font-size: .85rem; opacity: .75; }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- Troque o nome e a mensagem aqui pelo que quiser. -->
+    <h1>Eu te amo, meu amor ❤️</h1>
+    <p>Você faz os meus dias mais felizes. Clique no coração para guardar mais um pouquinho do meu carinho.</p>
+    <button id="heart" type="button" aria-label="Mandar um coração">♥</button>
+    <div id="counter" aria-live="polite">1 coração enviado</div>
+    <div class="hint">Cada clique cria um coração colorido ✨</div>
+  </main>
+
+  <script>
+    const heart = document.querySelector('#heart');
+    const counter = document.querySelector('#counter');
+    const colors = ['#ff2f56', '#ff6b81', '#ff4f9a', '#ff1744', '#ff8a80', '#ff3d71'];
+    let clicks = 1;
+
+    heart.addEventListener('click', (event) => {
+      clicks++;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      heart.style.color = color;
+      counter.textContent = `${clicks} corações enviados`;
+
+      for (let i = 0; i < 8; i++) {
+        const sparkle = document.createElement('span');
+        sparkle.className = 'spark';
+        sparkle.textContent = Math.random() > .3 ? '♥' : '✨';
+        sparkle.style.color = colors[Math.floor(Math.random() * colors.length)];
+        sparkle.style.left = `${event.clientX}px`;
+        sparkle.style.top = `${event.clientY}px`;
+        sparkle.style.setProperty('--x', `${(Math.random() - .5) * 260}px`);
+        sparkle.style.setProperty('--y', `${-80 - Math.random() * 240}px`);
+        document.body.appendChild(sparkle);
+        sparkle.addEventListener('animationend', () => sparkle.remove());
+      }
+    });
+  </script>
+</body>
+</html>
+
